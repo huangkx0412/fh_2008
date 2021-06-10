@@ -39,7 +39,7 @@ public class SkuController {
     public ServerResponse list(){
 
         String skuVoListInfo = RedisUtil.get("skuVoList");
-        log.info("这是什么？{}",skuVoListInfo);
+        System.out.println("*********************Test");
         if (StringUtils.isNotEmpty(skuVoListInfo)){
             List<Sku> skuListJson = JSON.parseArray(skuVoListInfo, Sku.class);
             return ServerResponse.success(skuListJson);
