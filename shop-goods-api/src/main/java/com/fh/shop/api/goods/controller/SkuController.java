@@ -11,6 +11,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api")
 @Api(tags = "商品信息模块")
+@Slf4j
 public class SkuController {
 
     @Resource(name = "skuService")
@@ -37,6 +39,7 @@ public class SkuController {
     public ServerResponse list(){
 
         String skuVoListInfo = RedisUtil.get("skuVoList");
+        log.info("这是什么？{}",skuVoListInfo);
         if (StringUtils.isNotEmpty(skuVoListInfo)){
             List<Sku> skuListJson = JSON.parseArray(skuVoListInfo, Sku.class);
             return ServerResponse.success(skuListJson);
