@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>忘记密码</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="../js/bootstrap/css/bootstrap.min.css">
+    <link rel="icon" href="../js/shop/assets/img/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="../js/shop/css/webbase.css" />
+    <link rel="stylesheet" type="text/css" href="../js/shop/css/pages-JD-index.css" />
+    <link rel="stylesheet" type="text/css" href="../js/shop/css/widget-jquery.autocomplete.css" />
+    <link rel="stylesheet" type="text/css" href="../js/shop/css/widget-cartPanelView.css" />
+</head>
+<body>
+
+<script src="../js/jquery-3.3.1.js"></script>
+<script src="../js/jquery.cookie.min.js"></script>
+<script src="../js/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../js/shop/js/pages/index.js"></script>
+<script src="../js/common/common.js"></script>
+
+<div class="container" style="margin-top: 10px">
+    <div class="row">
+        <div class="col-md-12">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label  class="col-sm-2 control-label">邮箱:</label><input id="key">
+
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" id="mail" >
+                        <div class="col-sm-4 ">
+                            <span id="statusId"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label  class="col-sm-2 control-label">验证码:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" id="code" placeholder="请输入验证码">
+                    </div>
+                    <span id="imageCodeDiv"></span>
+                    <button type="button" onclick="initCode()" class="btn btn-link">看不清，换一张</button>
+                </div>
+
+                <div style="text-align: center;">
+                    <button type="button" class="btn btn-primary" onclick="findPwd()">找回密码</button>
+                    <button type="reset" class="btn btn-primary">重置</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+
+
+   $(function () {
+       initCode();
+   })
+
+   var v_key = $.cookie("uuidKey");
+    function initCode() {
+
+
+       $.get({
+           url:server_url+"/code",
+           data:{"uuidKey":v_key},
+            success:function (res) {
+                if (res.code ==200){
+                    var v_imgBase64 = res.data.imageBase64;
+                    $("#imageCodeDiv").html('<img src="data:image/jpg;base64,'+v_imgBase64+'"/>')
+                    $("#key").val(res.data.uuidKey);
+                    $.cookie("uuidKey",res.data.uuidKey);
+                }
+            }
+       })
+
+    }
+
+    function findPwd() {
+
+        $.post({
+            url:server_url+"/members/findPassword",
+            data:{"mail":$("#mail").val(),"code":$("#code").val(),"idKey":$("#key").val()},
+            success:function (res) {
+                if (res.code ==200){
+                    alert("邮件已发送到您手机，请注意查看！！")
+                }else {
+                    alert(res.msg);
+                }
+            }
+        })
+
+    }
+
+
+
+</script>
+</body>
+</html>

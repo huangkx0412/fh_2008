@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+    "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fh.shop.api.cate.mapper.ICateMapper">
+
+    <select id="findAllCateList" resultType="com.fh.shop.api.cate.po.Cate">
+        select id,cateName,fatherId,typeId,typeName from t_cate
+    </select>
+
+
+
+</mapper>
